@@ -114,7 +114,7 @@ def move_monkey():
     global game_ticks
 
     if monkey.dead or monkey.won:
-        if keyboard.space:
+        if keyboard.RETURN:
             reset_game()
         return 
 
@@ -142,11 +142,12 @@ def move_monkey():
         monkey.image = "run" + str(dx) + str((game_ticks // 4) % 4)
 
 def reset_game():
+    global fruit_list 
     monkey.pos = WIDTH // 2, HEIGHT // 2
     monkey.dead = False
     monkey.won = False
     
-    fruit_list.clear()
+    fruit_list = []
     for i in range(NUMBER_OF_FRUIT):
         fruit = Actor(choice(fruit_images))
         fruit.topleft = randint(BORDER_OFFSET, WIDTH - BORDER_OFFSET - fruit.width), \
