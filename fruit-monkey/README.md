@@ -2,7 +2,7 @@
 
 A simple [Python](https://www.python.org/) / [Pygame Zero](https://pygame-zero.readthedocs.io/) game.
 
-![Title screen](./images/screen-shot.png?raw=true "Title screen")
+<img src="https://github.com/retroredge/pgzero-games/raw/master/fruit-monkey/images/screen-shot.png?raw=true" width="50%" height="50%">
 
 This game was written to demonstrate a very simple one screen game to a friend's son. The code is a simple, procedural Python script. There are no classes, this is deliberate to keep things easy for a beginner to understand. 
 
