@@ -16,11 +16,13 @@ FREE_LIFE_EVERY = 5000
 eagle = Actor("eagle")
 bullet = Actor("bullet")
 meanies = []
+explosions = []
 background_y = 0
 game_ticks = 1
 meanie_spawn_rate = 100
 score = 0
 next_free_life = FREE_LIFE_EVERY
+
 
 def draw():
     screen.blit('bg0', (0, background_y))
@@ -28,7 +30,10 @@ def draw():
 
     for i in range(len(meanies)):
         meanies[i].draw()
-    
+
+    for i in range(len(explosions)):
+        explosions[i].draw()
+
     if bullet.alive:
         bullet.draw()
 
@@ -56,7 +61,7 @@ def display_text(text, position):
         )
 
 def update():
-    global background_y, game_ticks, meanies, meanie_spawn_rate, next_free_life
+    global background_y, game_ticks, meanies, meanie_spawn_rate, next_free_life, explosions
     game_ticks += 1
     background_y += 2
     if background_y > images.bg0.get_height(): 
@@ -67,6 +72,7 @@ def update():
     move_bullet()
     spawn_meanies()
     move_meanies()
+    explosions = [e for e in explosions if e.alive == True]
     check_bullet_meanie_collision()
     meanies = [m for m in meanies if m.alive == True]
     if score >= next_free_life:
@@ -84,17 +90,29 @@ def check_bullet_meanie_collision():
                 bullet.alive = False
                 score += (meanies[i].type + 1) * 100
                 sounds.trap1.play()
+                explosion(meanies[i].pos)
+
+
+def explosion(position):
+    explosion = Actor("exp20")
+    explosion.alive = True
+    explosion.pos = position
+    explosion.tick = 0
+    explosions.append(explosion)
+
 
 def move_bullet():
     if bullet.alive:
         bullet.y -= BULLET_SPEED    
         if bullet.y < -bullet.height:
             bullet.alive = False
-        
+
+
 def on_key_up(key):
     if key == keys.SPACE and not bullet.alive and eagle.health > 0:
         bullet.alive = True
         bullet.pos = eagle.pos
+
 
 def move_meanies():
     for i in range(len(meanies)):
@@ -105,6 +123,14 @@ def move_meanies():
             if eagle.health > 0:
                 sounds.eagle0.play()
             eagle.health -= 1
+    
+    for i in range(len(explosions)): 
+        if game_ticks % 5 == 0:
+            explosions[i].tick += 1       
+        if explosions[i].tick > 7:
+            explosions[i].alive = False
+        else:
+            explosions[i].image = "exp2" + str(explosions[i].tick)
             
 
 def spawn_meanies():
