@@ -28,11 +28,8 @@ def draw():
     screen.blit('bg0', (0, background_y))
     screen.blit('bg0', (0, background_y - images.bg0.get_height()))
 
-    for i in range(len(meanies)):
-        meanies[i].draw()
-
-    for i in range(len(explosions)):
-        explosions[i].draw()
+    for obj in meanies + explosions:
+        obj.draw()
 
     if bullet.alive:
         bullet.draw()
@@ -72,9 +69,11 @@ def update():
     move_bullet()
     spawn_meanies()
     move_meanies()
-    explosions = [e for e in explosions if e.alive == True]
     check_bullet_meanie_collision()
+    
+    explosions = [e for e in explosions if e.alive == True]
     meanies = [m for m in meanies if m.alive == True]
+
     if score >= next_free_life:
         eagle.health += 1
         next_free_life += FREE_LIFE_EVERY
