@@ -16,15 +16,15 @@ FREE_LIFE_EVERY = 5000
 eagle = Actor("eagle")
 bullet = Actor("bullet")
 meanies = []
-backgroundY = 0
+background_y = 0
 game_ticks = 1
 meanie_spawn_rate = 100
 score = 0
 next_free_life = FREE_LIFE_EVERY
 
 def draw():
-    screen.blit('bg0', (0, backgroundY))
-    screen.blit('bg0', (0, backgroundY - images.bg0.get_height()))
+    screen.blit('bg0', (0, background_y))
+    screen.blit('bg0', (0, background_y - images.bg0.get_height()))
 
     for i in range(len(meanies)):
         meanies[i].draw()
@@ -56,13 +56,12 @@ def display_text(text, position):
         )
 
 def update():
-    global backgroundY, game_ticks, meanies, meanie_spawn_rate, next_free_life
+    global background_y, game_ticks, meanies, meanie_spawn_rate, next_free_life
     game_ticks += 1
-    backgroundY += 2
-    if backgroundY > images.bg0.get_height(): 
-        backgroundY = 0
-        meanie_spawn_rate -= 5
-        meanie_spawn_rate = max(30, meanie_spawn_rate)
+    background_y += 2
+    if background_y > images.bg0.get_height(): 
+        background_y = 0
+        meanie_spawn_rate = max(30, meanie_spawn_rate - 5)
 
     move_eagle()
     move_bullet()
@@ -70,7 +69,7 @@ def update():
     move_meanies()
     check_bullet_meanie_collision()
     meanies = [m for m in meanies if m.alive == True]
-    if score > next_free_life:
+    if score >= next_free_life:
         eagle.health += 1
         next_free_life += FREE_LIFE_EVERY
         sounds.wave0.play()
@@ -113,10 +112,10 @@ def spawn_meanies():
         return
 
     if (game_ticks % meanie_spawn_rate == 0):
-        mtype = randint(0,2)
-        meanie = Actor("meanie0" + str(mtype))
+        meanie_type = randint(0, 2)
+        meanie = Actor("meanie0" + str(meanie_type))
         meanie.pos = (randint(10, WIDTH - 10), 0)
-        meanie.type = mtype
+        meanie.type = meanie_type
         meanies.append(meanie)
         meanie.alive = True
 
@@ -135,11 +134,11 @@ def move_eagle():
 
 
 def reset_game():
-    global score, meanie_spawn_rate, backgroundY
+    global score, meanie_spawn_rate, background_y
     eagle.pos = WIDTH // 2, HEIGHT - eagle.height
     eagle.health = 3
     bullet.alive = False
-    backgroundY = 0
+    background_y = 0
     score = 0
     meanie_spawn_rate = 100
 

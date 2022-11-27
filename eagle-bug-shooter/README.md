@@ -12,7 +12,8 @@ This game was written to demonstrate a very simple vertical scrolling shooter ga
 - Pygame Zero 1.2.1
 
 ```
-python3 -m pip3 install pgzero
+python3 -m ensurepip
+pip3 install pgzero
 ```
 
 ## To Run
