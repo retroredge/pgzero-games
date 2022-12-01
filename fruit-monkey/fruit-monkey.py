@@ -63,20 +63,30 @@ def move_baddie():
 
     # Baddie gets faster and jittery once he's near the monkey
     if baddie.distance_to(monkey) < 150:
-        baddie_speed = randint(3, 7)
+        baddie_speed = randint(6, 7)
     else:
-        baddie_speed = 3
+        baddie_speed = 6
     
     # Home in on the monkey's position
+    dx = 0
+    dy = 0
     if (baddie.x > monkey.x):
-        baddie.x = baddie.x - baddie_speed
+        dx = -1
     elif (baddie.x < monkey.x):
-        baddie.x = baddie.x + baddie_speed
+        dx = 1
 
     if (baddie.y > monkey.y):
-        baddie.y = baddie.y - baddie_speed
+        dy = -1
     elif (baddie.y < monkey.y):
-        baddie.y = baddie.y + baddie_speed
+        dy = 1
+
+    if dx != 0 and dy != 0:
+        dx = dx * 0.707
+        dy = dy * 0.707
+
+    baddie.x = baddie.x + (dx * baddie_speed)
+    baddie.y = baddie.y + (dy * baddie_speed)
+
 
 # colliderect gives monkey a generous chance to grab the fruit when he's near it
 def check_monkey_fruit_collision():
