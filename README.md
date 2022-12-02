@@ -11,6 +11,10 @@
 
 <img src="https://github.com/retroredge/pgzero-games/raw/master/fruit-monkey/images/screen-shot.png?raw=true" width="30%" height="30%">
 
+### Ray Casting
+
+<img src="https://github.com/retroredge/pgzero-games/raw/master/ray-casting/images/screen-shot.png?raw=true" width="20%" height="20%">
+
 
 ## Requirements
 
