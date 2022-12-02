@@ -5,27 +5,30 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = f'{0},{0}'
 import pgzrun, math, pygame 
 from math import *
 
-WIDTH = 1000
-MAP_WIDTH = WIDTH / 2
-HEIGHT = int(WIDTH / 2)
+HEIGHT = 500
+WIDTH = HEIGHT * 2
+MAP_WIDTH = HEIGHT
 TILE_WIDTH = HEIGHT / 10
 CYAN = (0, 200, 200)
 GREEN = (0, 230, 0)
+BLUE = (0, 10, 230)
+MUD = (210,150,75)
 GREY = (50, 50, 50)
 YELLOW = (225, 225, 0)
 FOV = math.pi / 3  # about 60 degrees
-VIEW_PORT_WIDTH = int(MAP_WIDTH / 10)
+VIEW_PORT_WIDTH = int(MAP_WIDTH)
+MAX_DISTANCE = int(math.sqrt(HEIGHT ** 2 + HEIGHT ** 2))
 
 level = [
     [1,1,1,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,0,1,0,1],
-    [1,0,0,0,0,0,0,1,0,1],
-    [1,0,0,1,1,1,0,0,0,1],
     [1,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,1,0,1,0,1],
+    [1,0,0,0,0,1,0,0,0,1],
     [1,0,0,0,0,0,0,0,0,1],
+    [1,0,1,0,0,0,0,0,0,1],
+    [1,0,1,0,0,0,0,0,0,1],
     [1,0,1,1,0,0,0,0,0,1],
-    [1,0,1,0,0,0,0,0,0,1],
-    [1,0,1,0,0,0,0,0,0,1],
+    [1,0,0,1,0,0,0,0,0,1],
     [1,1,1,1,1,1,1,1,1,1]
 ]
 
@@ -38,11 +41,10 @@ class Player:
         self.y = y
         self.facing = 0
         self.rotate_angle = FOV / 10
-        self.speed = 4
+        self.speed = 5
 
     def draw(self):
-        screen.draw.circle((self.x, self.y), 10, GREEN)
-        screen.draw.line((self.x, self.y), (self.x + math.sin(self.facing) * 10, self.y - math.cos(self.facing) * 10), GREEN)
+        screen.draw.filled_circle((self.x, self.y), 4, GREEN)
 
     def turn(self, direction):
         if direction == 1:
@@ -50,12 +52,12 @@ class Player:
         else:
             self.facing -= self.rotate_angle
 
-    def move(self):
+    def move(self, direction):
         x = self.x
         y = self.y
 
-        x += math.sin(self.facing) * self.speed
-        y -= math.cos(self.facing) * self.speed
+        x += math.sin(self.facing) * self.speed * direction
+        y -= math.cos(self.facing) * self.speed * direction
 
         x = min(WIDTH / 2, max(0, x))
         y = min(HEIGHT, max(0, y))
@@ -67,18 +69,26 @@ class Player:
 def ray_cast(x, y, facing):
     angle = facing + (FOV / 2)
     for ray in range(VIEW_PORT_WIDTH):
-        # todo need HEIGHT to be far enough to cross the diagonal screen
-        for distance in range(HEIGHT):
+        for distance in range(MAX_DISTANCE):
             px = x + math.sin(angle) * distance
             py = y - math.cos(angle) * distance
             if is_tile_at(px, py):
                 break
-            screen.draw.line((x, y), (px, py), YELLOW)
+        
+        screen.draw.line((x, y), (px, py), YELLOW)
+
+        # 3D projection
+        wall_colour = (0, int(230 - distance / 3), 0)
+        distance *= math.cos(facing - angle) # fix the fish eye effect
+        wall_height = (1 / distance) * 35000
+        screen.draw.line(
+            (WIDTH - ray, (HEIGHT / 2) - (wall_height / 2)), 
+            ((WIDTH - ray), (HEIGHT / 2) + (wall_height / 2)),
+            wall_colour)
+
         angle -= FOV / VIEW_PORT_WIDTH
 
-def draw():
-    screen.clear()
-    # map grid
+def draw_map_grid():
     for my in range(map_height):
         for mx in range(map_width):
             if level[my] [mx] == 1:
@@ -89,9 +99,18 @@ def draw():
             box = Rect((mx * TILE_WIDTH, my * TILE_WIDTH), (TILE_WIDTH - 1, TILE_WIDTH - 1))
             screen.draw.rect(box, grid_colour)
 
-    player.draw()   
+def draw_floor_sky():
+    sky = Rect((MAP_WIDTH, 0), (MAP_WIDTH, HEIGHT / 2))
+    screen.draw.filled_rect(sky, BLUE)
+    floor = Rect((MAP_WIDTH, HEIGHT / 2), (MAP_WIDTH, HEIGHT))
+    screen.draw.filled_rect(floor, MUD)
 
-    ray_cast(player.x, player.y, player.facing)        
+def draw():
+    screen.clear()
+    draw_map_grid()
+    draw_floor_sky()
+    player.draw()   
+    ray_cast(player.x, player.y, player.facing)
 
 def update():
     if keyboard.left or keyboard.a:
@@ -100,12 +119,14 @@ def update():
         player.turn(1)
 
     if keyboard.up or keyboard.w:
-        player.move()
-
+        player.move(1)
+    elif keyboard.down or keyboard.s:
+        player.move(-1)
+        
 def is_tile_at(x, y):
     col = int(x / TILE_WIDTH)
     row = int(y / TILE_WIDTH)
     return level[row] [col] == 1
 
-player = Player(TILE_WIDTH * 5 + 25, TILE_WIDTH * 8 + 25)
+player = Player(TILE_WIDTH * 7, TILE_WIDTH * 8)
 pgzrun.go()
