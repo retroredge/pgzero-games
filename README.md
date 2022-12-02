@@ -3,17 +3,17 @@
 - [Python](https://www.python.org/) 
 - [Pygame Zero](https://pygame-zero.readthedocs.io/)
 
-### Eagle Bug Shooter
+### Eagle Bug Shooter Mini Game
  
 <img src="https://github.com/retroredge/pgzero-games/raw/master/eagle-bug-shooter/images/screen-shot.png?raw=true" width="20%" height="20%">
 
-### Fruit Monkey
+### Fruit Monkey Mini Game
 
 <img src="https://github.com/retroredge/pgzero-games/raw/master/fruit-monkey/images/screen-shot.png?raw=true" width="30%" height="30%">
 
-### Ray Casting
+### Ray Casting Demo
 
-<img src="https://github.com/retroredge/pgzero-games/raw/master/ray-casting/images/screen-shot.png?raw=true" width="20%" height="20%">
+<img src="https://github.com/retroredge/pgzero-games/raw/master/ray-casting/images/screen-shot.png?raw=true" width="30%" height="30%">
 
 
 ## Requirements

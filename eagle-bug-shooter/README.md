@@ -1,4 +1,4 @@
-# Eagle Bug Shooter
+# Eagle Bug Shooter Mini Game
 
 A simple [Python](https://www.python.org/) / [Pygame Zero](https://pygame-zero.readthedocs.io/) game.
 
