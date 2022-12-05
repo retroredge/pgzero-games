@@ -2,7 +2,6 @@
 # ray cast in the 2D map onto a 300 pixel wide 3D view. 
 
 import os
-# Position the game window top left
 os.environ['SDL_VIDEO_WINDOW_POS'] = f'{0},{0}'
 
 import pgzrun, math, pygame 
