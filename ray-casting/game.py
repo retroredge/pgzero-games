@@ -1,3 +1,7 @@
+# Simple ray casting engine that renders a vertical rectangle per ray cast in the 2D map onto a 
+# 3D view. Use SCALE_FACTOR to control the width of the rectangles which effects frame rate and
+# courseness of the 3D view. FOV controls the field of view.
+
 import os
 os.environ['SDL_VIDEO_WINDOW_POS'] = f'{0},{0}'
 
