@@ -13,7 +13,7 @@
 
 ### Ray Casting Demo
 
-<img src="https://github.com/retroredge/pgzero-games/raw/master/ray-casting/images/screen-shot.png?raw=true" width="30%" height="30%">
+<img src="https://github.com/retroredge/pgzero-games/raw/master/ray-casting/images/rc-screen-shot.png?raw=true" width="30%" height="30%">
 
 
 ## Requirements
@@ -28,5 +28,5 @@ pip3 install pgzero
 
 ## Graphics and sound effects
 
-The graphics and sound effect used in these games are from the [Code The Classics repository](https://github.com/Wireframe-Magazine/Code-the-Classics) which are described in the excellent book [Code the Classics](https://wireframe.raspberrypi.com/books/code-the-classics1).
+The graphics and sound effect used in the mini games are from the [Code The Classics repository](https://github.com/Wireframe-Magazine/Code-the-Classics) which are described in the excellent book [Code the Classics](https://wireframe.raspberrypi.com/books/code-the-classics1).
 
