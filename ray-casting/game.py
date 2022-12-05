@@ -4,6 +4,7 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = f'{0},{0}'
 import pgzrun, math, pygame 
 from math import *
 
+TITLE = "Ray Casting"
 HEIGHT = 500
 WIDTH = HEIGHT * 2
 MAP_WIDTH = HEIGHT
@@ -112,9 +113,17 @@ def draw_map_grid():
 
 def draw_floor_sky():
     sky = Rect((MAP_WIDTH, 0), (MAP_WIDTH, HEIGHT / 2))
-    screen.draw.filled_rect(sky, BLUE)
+    gradient_fill(BLUE, (0,0,0), sky)
     floor = Rect((MAP_WIDTH, HEIGHT / 2), (MAP_WIDTH, HEIGHT))
-    screen.draw.filled_rect(floor, MUD)
+    gradient_fill((0,0,0), MUD, floor)
+
+def gradient_fill(color1, color2, rectangele):
+    difference = [color2[i] - color1[i] for i in range(3)]
+    for y in range(rectangele.height):
+        color = [color1[i] + (difference[i] * y / rectangele.height) for i in range(3)]
+        surface = pygame.Surface((rectangele.width, 1))
+        surface.fill(color)
+        screen.blit(surface, (rectangele.x, rectangele.y + y))
 
 def draw():
     screen.clear()
@@ -142,5 +151,5 @@ def is_tile_at(x, y):
     row = int(y / TILE_WIDTH)
     return level[row] [col] == 1
 
-player = Player(TILE_WIDTH * 17, TILE_WIDTH * 18)
+player = Player(TILE_WIDTH * 18, TILE_WIDTH * 18)
 pgzrun.go()
