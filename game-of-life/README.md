@@ -3,7 +3,7 @@
 A simple [Python](https://www.python.org/) / [Pygame Zero](https://pygame-zero.readthedocs.io/) implementation
 of John Conway's Game of Life.
 
-<img src="https://github.com/retroredge/pgzero-games/raw/master/ray-casting/images/screen-shot.png?raw=true" width="50%" height="50%">
+<img src="https://github.com/retroredge/pgzero-games/raw/master/game-of-life/images/screen-shot.png?raw=true" width="50%" height="50%">
 
 The Cellular Automata on a 2D grid follow 3 basic rules:
 

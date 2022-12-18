@@ -17,7 +17,7 @@
 
 ### Conway's Game of Life
 
-<img src="https://github.com/retroredge/pgzero-games/raw/master/game-of-life/images/rc-screen-shot.png?raw=true" width="30%" height="30%">
+<img src="https://github.com/retroredge/pgzero-games/raw/master/game-of-life/images/screen-shot.png?raw=true" width="30%" height="30%">
 
 
 ## Requirements
