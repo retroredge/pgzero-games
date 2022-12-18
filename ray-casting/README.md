@@ -24,4 +24,8 @@ python3 game.py
 
 ## Controls
 
-Use the arrow keys to move around.
+Use the left and right arrow keys to rotate the player.
+
+Up and down arrow keys or W and S move the player forwards and backwards.
+
+A and D can be used to straf left and right.

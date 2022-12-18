@@ -69,12 +69,16 @@ class Player:
     def turn(self, direction):
         self.facing += self.rotate_angle * direction
 
-    def move(self, direction):
+    def move(self, direction, straf = False):
         x = self.x
         y = self.y
 
-        x += math.sin(self.facing) * self.speed * direction
-        y -= math.cos(self.facing) * self.speed * direction
+        facing = self.facing
+        if straf:
+            facing = self.facing + (math.pi / 2) # rotate facing 90 degrees for strafing movement
+
+        x += math.sin(facing) * self.speed * direction
+        y -= math.cos(facing) * self.speed * direction
 
         if not is_tile_at(x, y):
             self.x = x
@@ -138,9 +142,14 @@ def draw():
     screen.draw.text(str(int(clock.get_fps())), topleft = (0, 0), color="yellow")
 
 def update():
-    if keyboard.left or keyboard.a:
+    if keyboard.a:
+        player.move(-1, True)
+    elif keyboard.d:
+        player.move(1, True)
+
+    if keyboard.left:
         player.turn(-1)
-    elif keyboard.right or keyboard.d:
+    elif keyboard.right:
         player.turn(1)
 
     if keyboard.up or keyboard.w:
