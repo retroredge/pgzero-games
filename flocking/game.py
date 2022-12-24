@@ -10,22 +10,22 @@ HEIGHT = 600
 WIDTH = 600
 NUM_BIRDS = 100
 LOCAL_RADIUS = 50
-MAX_STEERING_FORCE = 0.1
-SPEED = 5
+MAX_STEERING_FORCE = 0.2
+SPEED = 3
 
 GREEN = (0, 230, 0)
 RED = (230, 0, 0)
 
 birds = []
 
-def clamp(vec, max_magnitude):
-    vx = vec.x
-    vy = vec.y
-    n = math.sqrt(vx**2 + vy**2)
-    if n == 0:
-        return vec
-    f = min(n, max_magnitude) / n
-    return Vector2(f * vx, f * vy)
+def clamp(vector, max_magnitude):
+    vx = vector.x
+    vy = vector.y
+    v_mag = math.sqrt(vx**2 + vy**2)
+    if v_mag == 0:
+        return vector
+    mag_factor = min(v_mag, max_magnitude) / v_mag
+    return Vector2(mag_factor * vx, mag_factor * vy)
 
 class Bird:
     def __init__(self, x, y):
@@ -33,12 +33,26 @@ class Bird:
         self.velocity = Vector2(0.5 - random(), 0.5 - random())
         self.velocity *= SPEED
         self.acceleration = Vector2(0, 0)
+        self.points = [(5, 0), (-5, 3), (-5, -3), (5, 0)]
 
-    
+
+    def roatate_points(self):
+        phi = self.velocity.as_polar()[1]
+        rotated_points = []
+        for i, (x, y) in enumerate(self.points):
+            vec = Vector2(x, y)
+            vec.rotate_ip(phi)
+            rotated_points.append((vec.x, vec.y))
+        return rotated_points
+        
+
     def draw(self):
-        xx = self.velocity.normalize().x * 10 + self.position.x
-        yy = self.velocity.normalize().y * 10 + self.position.y
-        screen.draw.line((self.position.x, self.position.y), (xx, yy), GREEN)
+        rotated_points = self.roatate_points()
+        for i in range(0, 3):
+            x, y = rotated_points[i]
+            xx, yy = rotated_points[i+1]
+            screen.draw.line((x + self.position.x, y + self.position.y), 
+            (xx + self.position.x, yy + self.position.y), GREEN)
 
 
     def update(self):
