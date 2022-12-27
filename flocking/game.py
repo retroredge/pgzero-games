@@ -166,10 +166,8 @@ def draw():
             "Aligment: " + str(round(alignment_weight, 2)) +
             " Cohesion: " + str(round(cohesion_weight, 2)) + 
             " Separation: " + str(round(separation_weight, 2)),
-            center = (WIDTH // 2, 15),
-            color = BLUE,
-            fontsize = 25
-        )
+            center = (WIDTH // 2, 15), color = BLUE, fontsize = 25)
+
 def update():
     check_keys()
 

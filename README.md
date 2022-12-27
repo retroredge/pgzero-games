@@ -19,6 +19,9 @@
 
 <img src="https://github.com/retroredge/pgzero-games/raw/master/game-of-life/images/screen-shot.png?raw=true" width="30%" height="30%">
 
+### Flocking Demo
+
+<img src="https://github.com/retroredge/pgzero-games/raw/master/flocking/images/screen-shot.png?raw=true" width="30%" height="30%">
 
 ## Requirements
 
