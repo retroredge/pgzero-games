@@ -6,17 +6,23 @@ from random import random, randint
 from pygame.math import Vector2
 
 TITLE = "Flocking"
-HEIGHT = 600
-WIDTH = 600
+HEIGHT = 800
+WIDTH = 800
 NUM_BIRDS = 100
 LOCAL_RADIUS = 50
 MAX_STEERING_FORCE = 0.2
 SPEED = 3
 
 GREEN = (0, 230, 0)
-RED = (230, 0, 0)
+BLUE = (0, 230, 230)
 
 birds = []
+
+WEIGHT_DELTA = 0.05
+WEIGHT_MAX = 10
+alignment_weight = 1
+cohesion_weight = 1
+separation_weight = 1
 
 def clamp(vector, max_magnitude):
     vx = vector.x
@@ -62,14 +68,17 @@ class Bird:
                 locals.append(bird)
 
         if len(locals) > 0:
-            steering_vector = self.steer_to_average_heading(locals)
-            self.acceleration += steering_vector 
+            alignment_vector = self.steer_to_average_heading(locals)
+            alignment_vector = alignment_vector * alignment_weight
+            self.acceleration += alignment_vector 
 
-            steering_vector = self.steer_to_average_position(locals)
-            self.acceleration += steering_vector 
+            cohesion_vector = self.steer_to_average_position(locals)
+            cohesion_vector = cohesion_vector * cohesion_weight
+            self.acceleration += cohesion_vector 
 
-            steering_vector = self.steer_to_avoid_crowding(locals)
-            self.acceleration += steering_vector 
+            separation_vector = self.steer_to_avoid_crowding(locals)
+            separation_vector = separation_vector * separation_weight
+            self.acceleration += separation_vector 
 
         # change the velociy based on the acceleration
         self.velocity += self.acceleration
@@ -153,10 +162,44 @@ def draw():
     screen.clear()
     for bird in birds:
         bird.draw()
-
+    screen.draw.text(
+            "Aligment: " + str(round(alignment_weight, 2)) +
+            " Cohesion: " + str(round(cohesion_weight, 2)) + 
+            " Separation: " + str(round(separation_weight, 2)),
+            center = (WIDTH // 2, 15),
+            color = BLUE,
+            fontsize = 25
+        )
 def update():
+    check_keys()
+
+    # should really take a snapshot of all the birds current state and pass that in to this function for it to use
     for bird in birds:
         bird.update()   
+
+def check_keys():
+    global alignment_weight, cohesion_weight, separation_weight
+
+    if keyboard.z:
+        alignment_weight -= WEIGHT_DELTA
+    elif keyboard.x:
+        alignment_weight += WEIGHT_DELTA
+
+    alignment_weight = min(WEIGHT_MAX, max(0, alignment_weight))             
+
+    if keyboard.c:
+        cohesion_weight -= WEIGHT_DELTA
+    elif keyboard.v:
+        cohesion_weight += WEIGHT_DELTA
+
+    cohesion_weight = min(WEIGHT_MAX, max(0, cohesion_weight))             
+
+    if keyboard.b:
+        separation_weight -= WEIGHT_DELTA
+    elif keyboard.n:
+        separation_weight += WEIGHT_DELTA
+
+    separation_weight = min(WEIGHT_MAX, max(0, separation_weight))             
 
 for i in range(NUM_BIRDS):
     bird = Bird(randint(0, WIDTH), randint(0, HEIGHT))
