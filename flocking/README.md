@@ -26,6 +26,6 @@ python3 game.py
 
 ## Controls
 
-Z / X: decrease / increase Aligment weighting
-C / V: decrease / increase Cohesion weighting
-B / N: decrease / increase Separation weighting
+- Z / X: decrease / increase Aligment weighting
+- C / V: decrease / increase Cohesion weighting
+- B / N: decrease / increase Separation weighting
